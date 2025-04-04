@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zach Bryan Uploads</title>
+    <style>
+        body {
+            background-color: #f5e8d3;
+            font-family: 'Courier New', Courier, monospace;
+            color: #4a2c0f;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-image: url('https:// subtlepatterns.com/patterns/wood_pattern.png');
+            background-size: cover;
+        }
+        .container {
+            padding: 50px;
+            background: rgba(245, 232, 211, 0.8);
+            border: 3px solid #8b5a2b;
+            border-radius: 10px;
+            width: 50%;
+            margin: 50px auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            font-size: 2.5em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            color: #8b5a2b;
+        }
+        .upload-box {
+            padding: 20px;
+            border: 2px dashed #4a2c0f;
+            background: #f9f1e7;
+            border-radius: 5px;
+        }
+        input[type="file"] {
+            font-size: 1.2em;
+            color: #4a2c0f;
+        }
+        p {
+            font-size: 1.1em;
+            line-height: 1.5;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Zach Bryan Uploads</h1>
+        <div class="upload-box">
+            <input type="file" id="fileInput" onchange="handleFileUpload()">
+        </div>
+        <p>Drop your soul in a file—songs, pics, or whatever feels right.</p>
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+        function handleFileUpload() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            if (file) {
+                // Call the main function from main.js, passing the file
+                processUpload(file);
+            }
+        }
+    </script>
+</body>
+</html>
