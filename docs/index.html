@@ -178,10 +178,16 @@
                 const artistCard = document.createElement('div');
                 artistCard.className = 'artist-card';
 
+                // Adjust the cover image extension to .jpeg
+                let coverImage = artistData[artist].coverImage;
+                if (coverImage && coverImage.endsWith('.png')) {
+                    coverImage = coverImage.replace('.png', '.jpeg');
+                }
+
                 const header = document.createElement('div');
                 header.className = 'artist-header';
                 header.innerHTML = `
-                    ${artistData[artist].coverImage ? `<img src="${artistData[artist].coverImage}" alt="${artist} cover">` : ''}
+                    ${coverImage ? `<img src="${coverImage}" alt="${artist} cover">` : ''}
                     <h2>${artist}</h2>
                     <div class="artist-stats">
                         <span class="stat-item">Videos: ${artistData[artist].totals.Videos}</span>
