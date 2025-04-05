@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - Artist Analytics Dashboard</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #1c2526;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr; /* Single column for terms */
+            gap: 20px;
+        }
+
+        .terms-card {
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .terms-header {
+            background: linear-gradient(45deg, #ff4d4d, #ff6666);
+            color: white;
+            padding: 15px;
+            position: relative;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .terms-header h1 {
+            margin: 0;
+            font-size: 1.8em;
+            z-index: 1;
+        }
+
+        .terms-content {
+            padding: 20px;
+        }
+
+        .terms-content h2 {
+            font-size: 1.3em;
+            color: #ff4d4d;
+            margin-top: 20px;
+            border-left: 4px solid #ff4d4d;
+            padding-left: 10px;
+        }
+
+        .terms-content p, .terms-content ul {
+            font-size: 0.95em;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .terms-content ul {
+            padding-left: 20px;
+            margin: 10px 0;
+        }
+
+        .terms-content li {
+            margin-bottom: 8px;
+        }
+
+        .terms-content a {
+            color: #ff4d4d;
+            text-decoration: none;
+        }
+
+        .terms-content a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: white;
+            font-size: 0.9em;
+        }
+
+        .footer a {
+            color: #ff6666;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .terms-card {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="terms-card">
+            <div class="terms-header">
+                <h1>Terms of Service</h1>
+            </div>
+            <div class="terms-content">
+                <p><strong>Effective Date:</strong> 4-05-2025</p>
+                <p>By using Artist Analytics Dashboard ("the App"), you agree to these Terms of Service.</p>
+
+                <h2>1. Acceptance of Terms</h2>
+                <ul>
+                    <li>By accessing the App, you agree to comply with these terms.</li>
+                    <li>If you do not agree, do not use the App.</li>
+                </ul>
+
+                <h2>2. Use of the App</h2>
+                <ul>
+                    <li>The App provides analytics and profile links for music artists and their associated accounts.</li>
+                    <li>You may not use the App for any unlawful or prohibited activities, including but not limited to scraping data for commercial use without permission.</li>
+                    <li>We reserve the right to restrict or terminate access if these terms are violated.</li>
+                </ul>
+
+                <h2>3. Intellectual Property</h2>
+                <ul>
+                    <li>All content, code, and design in the App are owned by Jack Van Zeeland, except for artist data and images, which are used under fair use or with permission.</li>
+                    <li>You may not reproduce, distribute, or use artist data, images, or App content for commercial purposes without explicit permission.</li>
+                    <li>Profile links provided in the App are for informational purposes and redirect to third-party platforms; we are not responsible for the content on those platforms.</li>
+                </ul>
+
+                <h2>4. Disclaimer of Warranties</h2>
+                <ul>
+                    <li>The App is provided "as is" without any warranties.</li>
+                    <li>We do not guarantee the accuracy, completeness, or timeliness of the artist analytics data displayed.</li>
+                    <li>We are not liable for any issues arising from the use of the App, including inaccuracies in data or issues with third-party links.</li>
+                </ul>
+
+                <h2>5. Limitation of Liability</h2>
+                <ul>
+                    <li>We are not responsible for any damages resulting from App usage, including but not limited to reliance on analytics data or issues with third-party platforms linked through the App.</li>
+                    <li>Use the App at your own risk.</li>
+                </ul>
+
+                <h2>6. Changes to These Terms</h2>
+                <ul>
+                    <li>We may update these Terms at any time.</li>
+                    <li>Continued use after updates means you accept the new terms.</li>
+                </ul>
+
+                <h2>7. Contact Us</h2>
+                <p>For questions, contact us at <a href="mailto:jackvz23@yahoo.com">jackvz23@yahoo.com</a>.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p><a href="index.html">Back to Dashboard</a></p>
+    </div>
+</body>
+</html>
