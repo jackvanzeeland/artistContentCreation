@@ -3,102 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zach Bryan Uploads</title>
+    <title>Dynamic Artist Analytics</title>
     <style>
-        body {
-            background-color: #f5e8d3;
-            font-family: 'Courier New', Courier, monospace;
-            color: #4a2c0f;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .outer-square {
-            background-image: url('/docs/cover.jpeg');
-            background-size: cover;
-            background-position: center;
-            width: 80%;
-            max-width: 800px;
-            padding: 20px;
-            border: 5px solid #8b5a2b;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-        }
         .container {
-            padding: 40px;
-            background: rgba(245, 232, 211, 0.9);
-            border: 3px solid #8b5a2b;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        h1 {
-            font-size: 2.5em;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 20px;
-            color: #8b5a2b;
-        }
-        .upload-box {
+            max-width: 1200px;
+            margin: 20px auto;
             padding: 20px;
-            border: 2px dashed #4a2c0f;
-            background: #f9f1e7;
-            border-radius: 5px;
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
+            flex-wrap: wrap;
+            gap: 20px;
         }
-        input[type="file"] {
-            font-size: 1.2em;
-            color: #4a2c0f;
-        }
-        button {
-            background-color: #8b5a2b;
-            color: #f5e8d3;
-            border: none;
-            padding: 10px 20px;
-            font-size: 1.1em;
-            font-family: 'Courier New', Courier, monospace;
-            text-transform: uppercase;
-            cursor: pointer;
+
+        .artist-card {
+            border: 1px solid #ccc;
             border-radius: 5px;
+            padding: 15px;
+            width: 300px;
+            background-color: #f9f9f9;
         }
-        button:hover {
-            background-color: #4a2c0f;
+
+        .artist-header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
         }
+
+        .account-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .account-card:hover {
+            background-color: #f0f0f0;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+
+        h3 {
+            margin: 0 0 5px 0;
+            font-size: 1em;
+            color: #444;
+        }
+
         p {
-            font-size: 1.1em;
-            line-height: 1.5;
-            margin-top: 20px;
+            margin: 5px 0;
+            font-size: 0.9em;
+        }
+
+        #loading {
+            text-align: center;
+            padding: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="outer-square">
-        <div class="container">
-            <h1>Zach Bryan Uploads</h1>
-            <form id="uploadForm" class="upload-box">
-                <input type="file" id="fileInput" name="file">
-                <button type="submit">Upload</button>
-            </form>
-            <p>Drop your soul in a file—songs, pics, or whatever feels right.</p>
-        </div>
-    </div>
+    <div id="loading">Loading data...</div>
+    <div class="container" id="container"></div>
 
-    <script src="main.js"></script>
+    <!-- Include Papa Parse library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <script>
-        document.getElementById('uploadForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent default form submission
-            const fileInput = document.getElementById('fileInput');
-            const file = fileInput.files[0];
-            if (file) {
-                // Call the main.js function to handle the upload
-                processUpload(file);
-            } else {
-                alert('Please select a file first.');
+        // Function to aggregate data by artist
+        function aggregateArtistData(data) {
+            const artists = {};
+
+            data.forEach(item => {
+                if (!item.Artist) return; // Skip empty rows
+
+                if (!artists[item.Artist]) {
+                    artists[item.Artist] = {
+                        totals: { Videos: 0, Views: 0, Likes: 0, Comments: 0, Reposts: 0 },
+                        accounts: []
+                    };
+                }
+
+                // Convert strings to numbers and add to totals
+                const videos = parseInt(item.Videos) || 0;
+                const views = parseInt(item.Views) || 0;
+                const likes = parseInt(item.Likes) || 0;
+                const comments = parseInt(item.Comments) || 0;
+                const reposts = parseInt(item.Reposts) || 0;
+
+                artists[item.Artist].totals.Videos += videos;
+                artists[item.Artist].totals.Views += views;
+                artists[item.Artist].totals.Likes += likes;
+                artists[item.Artist].totals.Comments += comments;
+                artists[item.Artist].totals.Reposts += reposts;
+
+                // Add account details
+                artists[item.Artist].accounts.push({
+                    AccountType: item.AccountType,
+                    ProfileLink: item.ProfileLink,
+                    Videos: videos,
+                    Views: views,
+                    Likes: likes,
+                    Comments: comments,
+                    Reposts: reposts
+                });
+            });
+
+            return artists;
+        }
+
+        // Function to create HTML cards
+        function createCards(data) {
+            const container = document.getElementById('container');
+            const loading = document.getElementById('loading');
+            const artistData = aggregateArtistData(data);
+
+            // Hide loading message
+            loading.style.display = 'none';
+
+            for (const artist in artistData) {
+                // Create artist card
+                const artistCard = document.createElement('div');
+                artistCard.className = 'artist-card';
+
+                // Create header with totals
+                const header = document.createElement('div');
+                header.className = 'artist-header';
+                header.innerHTML = `
+                    <h2>${artist}</h2>
+                    <p>Total Videos: ${artistData[artist].totals.Videos}</p>
+                    <p>Total Views: ${artistData[artist].totals.Views}</p>
+                    <p>Total Likes: ${artistData[artist].totals.Likes}</p>
+                    <p>Total Comments: ${artistData[artist].totals.Comments}</p>
+                    <p>Total Reposts: ${artistData[artist].totals.Reposts}</p>
+                `;
+                artistCard.appendChild(header);
+
+                // Create account cards
+                artistData[artist].accounts.forEach(account => {
+                    const accountCard = document.createElement('div');
+                    accountCard.className = 'account-card';
+                    accountCard.innerHTML = `
+                        <h3>${account.AccountType}</h3>
+                        <p>Videos: ${account.Videos}</p>
+                        <p>Views: ${account.Views}</p>
+                        <p>Likes: ${account.Likes}</p>
+                        <p>Comments: ${account.Comments}</p>
+                        <p>Reposts: ${account.Reposts}</p>
+                    `;
+                    accountCard.onclick = () => window.location = account.ProfileLink;
+                    artistCard.appendChild(accountCard);
+                });
+
+                container.appendChild(artistCard);
+            }
+        }
+
+        // Load and parse CSV file
+        Papa.parse('report.csv', {
+            download: true,
+            header: true,
+            complete: function(results) {
+                createCards(results.data);
+            },
+            error: function(error) {
+                console.error('Error loading CSV:', error);
+                document.getElementById('loading').textContent = 'Error loading data';
             }
         });
     </script>
