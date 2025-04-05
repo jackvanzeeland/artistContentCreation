@@ -1,7 +1,7 @@
-Artist,Account Type,ProfileLink,Videos,Views,Likes,Comments,Reposts
-Zach Bryan,Song of the day,https://www.tiktok.com/discover/copyright-free-gameplay,1,20,3,0,0
-Zach Bryan,Exclusive,https://www.tiktok.com/discover/copyright-free-gameplay,4,19,2,1,1
-Zach Bryan,Account Type 3,https://www.tiktok.com/discover/copyright-free-gameplay,8,567,45,6,0
-Artist 2,Account Type 3,https://www.tiktok.com/discover/copyright-free-gameplay,2,40,6,0,0
-Artist 2,Song of the day,https://www.tiktok.com/discover/copyright-free-gameplay,8,38,4,2,2
-Artist 3,Exclusive,https://www.tiktok.com/discover/copyright-free-gameplay,16,1134,90,12,0
+Artist,Account Type,User,ProfileLink,coverImage,Videos,Views,Likes,Comments,Reposts
+Zach Bryan,Song of the day,@zb_songOfTheDay,https://www.tiktok.com/discover/copyright-free-gameplay,zb.png,1,20,3,0,0
+Zach Bryan,Exclusive,@zb_exclusive,https://www.tiktok.com/discover/copyright-free-gameplay,zb.png,4,19,2,1,1
+Zach Bryan,Account Type 3,@zb_at3,https://www.tiktok.com/discover/copyright-free-gameplay,zb.png,8,567,45,6,0
+Artist 2,Account Type 3,@a2_at3,https://www.tiktok.com/discover/copyright-free-gameplay,a2.png,2,40,6,0,0
+Artist 2,Song of the day,@a2_songOfTheDay,https://www.tiktok.com/discover/copyright-free-gameplay,a2.png,8,38,4,2,2
+Artist 3,Exclusive,@a3_exlusive,https://www.tiktok.com/discover/copyright-free-gameplay,a3.png,16,1134,90,12,0
