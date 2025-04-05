@@ -3,82 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Artist Analytics</title>
+    <title>Music Artist Analytics Dashboard</title>
     <style>
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            margin: 0;
             padding: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
         }
 
         .artist-card {
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 15px;
-            width: 300px;
-            background-color: #f9f9f9;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+
+        .artist-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
         }
 
         .artist-header {
-            background-color: #333;
+            background: linear-gradient(45deg, #ff3366, #ff6b33);
             color: white;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 10px 10px 0 0;
+            margin: -20px -20px 20px -20px;
+            position: relative;
+        }
+
+        .artist-header h2 {
+            margin: 0;
+            font-size: 1.5em;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .artist-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 5px;
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-top: 10px;
         }
 
         .account-card {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 10px;
-            margin: 10px 0;
-            background-color: white;
+            background: #fff;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s ease;
+            border-left: 4px solid #ff3366;
         }
 
         .account-card:hover {
-            background-color: #f0f0f0;
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            background: #fff5f5;
         }
 
-        h2 {
-            margin: 0;
-            font-size: 1.2em;
+        .account-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.1em;
+            color: #ff3366;
+            font-weight: 600;
         }
 
-        h3 {
-            margin: 0 0 5px 0;
-            font-size: 1em;
-            color: #444;
+        .account-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 0.85em;
         }
 
-        p {
-            margin: 5px 0;
-            font-size: 0.9em;
+        .stat-item {
+            background: #f8f8f8;
+            padding: 5px 10px;
+            border-radius: 20px;
+            color: #666;
         }
 
         #loading {
             text-align: center;
-            padding: 20px;
+            padding: 40px;
+            color: white;
+            font-size: 1.2em;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .artist-card {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-    <div id="loading">Loading data...</div>
+    <div id="loading">Loading artist analytics...</div>
     <div class="container" id="container"></div>
 
-    <!-- Include Papa Parse library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <script>
-        // Function to aggregate data by artist
         function aggregateArtistData(data) {
             const artists = {};
 
             data.forEach(item => {
-                if (!item.Artist) return; // Skip empty rows
+                if (!item.Artist) return;
 
                 if (!artists[item.Artist]) {
                     artists[item.Artist] = {
@@ -87,7 +134,6 @@
                     };
                 }
 
-                // Convert strings to numbers and add to totals
                 const videos = parseInt(item.Videos) || 0;
                 const views = parseInt(item.Views) || 0;
                 const likes = parseInt(item.Likes) || 0;
@@ -100,7 +146,6 @@
                 artists[item.Artist].totals.Comments += comments;
                 artists[item.Artist].totals.Reposts += reposts;
 
-                // Add account details
                 artists[item.Artist].accounts.push({
                     AccountType: item.AccountType,
                     ProfileLink: item.ProfileLink,
@@ -115,44 +160,43 @@
             return artists;
         }
 
-        // Function to create HTML cards
         function createCards(data) {
             const container = document.getElementById('container');
             const loading = document.getElementById('loading');
             const artistData = aggregateArtistData(data);
 
-            // Hide loading message
             loading.style.display = 'none';
 
             for (const artist in artistData) {
-                // Create artist card
                 const artistCard = document.createElement('div');
                 artistCard.className = 'artist-card';
 
-                // Create header with totals
                 const header = document.createElement('div');
                 header.className = 'artist-header';
                 header.innerHTML = `
                     <h2>${artist}</h2>
-                    <p>Total Videos: ${artistData[artist].totals.Videos}</p>
-                    <p>Total Views: ${artistData[artist].totals.Views}</p>
-                    <p>Total Likes: ${artistData[artist].totals.Likes}</p>
-                    <p>Total Comments: ${artistData[artist].totals.Comments}</p>
-                    <p>Total Reposts: ${artistData[artist].totals.Reposts}</p>
+                    <div class="artist-stats">
+                        <p>Videos: ${artistData[artist].totals.Videos}</p>
+                        <p>Views: ${artistData[artist].totals.Views.toLocaleString()}</p>
+                        <p>Likes: ${artistData[artist].totals.Likes}</p>
+                        <p>Comments: ${artistData[artist].totals.Comments}</p>
+                        <p>Reposts: ${artistData[artist].totals.Reposts}</p>
+                    </div>
                 `;
                 artistCard.appendChild(header);
 
-                // Create account cards
                 artistData[artist].accounts.forEach(account => {
                     const accountCard = document.createElement('div');
                     accountCard.className = 'account-card';
                     accountCard.innerHTML = `
                         <h3>${account.AccountType}</h3>
-                        <p>Videos: ${account.Videos}</p>
-                        <p>Views: ${account.Views}</p>
-                        <p>Likes: ${account.Likes}</p>
-                        <p>Comments: ${account.Comments}</p>
-                        <p>Reposts: ${account.Reposts}</p>
+                        <div class="account-stats">
+                            <span class="stat-item">Videos: ${account.Videos}</span>
+                            <span class="stat-item">Views: ${account.Views.toLocaleString()}</span>
+                            <span class="stat-item">Likes: ${account.Likes}</span>
+                            <span class="stat-item">Comments: ${account.Comments}</span>
+                            <span class="stat-item">Reposts: ${account.Reposts}</span>
+                        </div>
                     `;
                     accountCard.onclick = () => window.location = account.ProfileLink;
                     artistCard.appendChild(accountCard);
@@ -162,7 +206,6 @@
             }
         }
 
-        // Load and parse CSV file
         Papa.parse('report.csv', {
             download: true,
             header: true,
@@ -171,7 +214,7 @@
             },
             error: function(error) {
                 console.error('Error loading CSV:', error);
-                document.getElementById('loading').textContent = 'Error loading data';
+                document.getElementById('loading').textContent = 'Error loading artist data';
             }
         });
     </script>
